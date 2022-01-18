@@ -1,9 +1,21 @@
-// Xcode DerivedData App Hashes
+// Xcode DerivedData Project Hashes
+// "application hash"
+// hashStringForPath() in DevToolsCore.framework
 // https://pewpewthespells.com/blog/xcode_deriveddata_hashes.html
 
 import Foundation
 import Darwin
 import CommonCrypto
+
+
+// @param path (input) string path to the ".xcodeproj" or ".xcworkspace" file
+let path = "/Users/phatblat/dev/ldg/L8r/L8r.xcodeproj"
+//let path = "/Users/phatblat/dev/ldg/L8r/L8r.xcworkspace/contents.xcworkspacedata"
+
+let url = URL(fileURLWithPath: path)
+url.path
+url.relativePath
+FileManager.default.fileExists(atPath: url.path)
 
 func md5(_ inString: String) -> String! {
     let str = inString.cString(using: .utf8)
@@ -26,9 +38,7 @@ func swapByteOrder(value: UInt64) -> UInt64 {
     return (val << 32) | (val >> 32)
 }
 
-let path = "/Users/phatblat/dev/ldg/L8r/L8r.xcodeproj"
-//let path = "/Users/phatblat/dev/ldg/L8r/L8r.xcworkspace"
-let md = md5(path)!
+let md = md5(url.relativePath)!
 
 let firstEight = md.prefix(8)
 let value = UInt64(firstEight, radix: 16)!
