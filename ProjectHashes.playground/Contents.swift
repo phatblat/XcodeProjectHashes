@@ -38,10 +38,19 @@ func swapByteOrder(value: UInt64) -> UInt64 {
     return (val << 32) | (val >> 32)
 }
 
-let md = md5(url.relativePath)!
+extension String {
+   func splitStringInHalf() -> (firstHalf: String, secondHalf: String) {
+        (firstHalf: String(prefix(count / 2)),
+         secondHalf: String(suffix(count / 2)))
+    }
+}
 
-let firstEight = md.prefix(8)
-let value = UInt64(firstEight, radix: 16)!
+let md = md5(url.relativePath)!
+let digestLength = md.count
+//assert(md.count == Int(CC_MD5_DIGEST_LENGTH))
+let digest = md.splitStringInHalf()
+
+let value = UInt64(digest.firstHalf, radix: 16)!
 var startValue = swapByteOrder(value: value)
 var resultStr = ""
 
@@ -58,8 +67,7 @@ for _ in 0..<14 {
 
 resultStr = String(resultStr.reversed())
 
-let secondEight = String(Array(md)[8..<16])
-let value2 = UInt64(secondEight, radix: 16)!
+let value2 = UInt64(digest.secondHalf, radix: 16)!
 var startValue2 = swapByteOrder(value: value2)
 var resultStr2 = ""
 
