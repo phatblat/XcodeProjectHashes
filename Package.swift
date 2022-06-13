@@ -9,7 +9,7 @@ let package = Package(
         .executableTarget(
             name: "XcodeProjectHashes",
             dependencies: [],
-            path: "Sources"
+            path: "ProjectHashes.playground/Sources/Package"
         )
     ]
 )
